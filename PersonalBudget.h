@@ -4,16 +4,20 @@
 #include <iostream>
 
 #include "UserManager.h"
+#include "IncomesManager.h"
 
 
 using namespace std;
 
 class PersonalBudget {
 
-char choice;
+
 
 UserManager userManager;
+IncomesManager * incomesManager;
 
+char choice;
+const string FILE_NAME_WITH_INCOMES;
 
 void menuLoggedOutUser();
 void menuLoggedInUser();
@@ -22,13 +26,18 @@ void loginUser();
 void registerUser();
 void loginExists();
 void changePassword();
+void addIncomes();
 
 public:
 
-    PersonalBudget(string fileNameWithUsers) : userManager(fileNameWithUsers) {
+    PersonalBudget(string fileNameWithUsers, string fileNameWithIncomes) : userManager(fileNameWithUsers), FILE_NAME_WITH_INCOMES(fileNameWithIncomes)  {
+        incomesManager = NULL;
     };
 
-    ~PersonalBudget(){}
+    ~PersonalBudget(){
+    delete incomesManager;
+    incomesManager = NULL;
+    };
 
     void mainMenu();
 };

@@ -8,6 +8,11 @@ int PersonalBudget::getLoggedInUserId() {
 void PersonalBudget::loginUser() {
 
     userManager.loginUser();
+    if(userManager.isUserLoggedIn()){
+
+            incomesManager = new IncomesManager(FILE_NAME_WITH_INCOMES, getLoggedInUserId());
+
+       }
 }
 
 void PersonalBudget::registerUser() {
@@ -20,10 +25,19 @@ void PersonalBudget::loginExists() {
     userManager.loginExists();
 }
 
-void PersonalBudget::changePassword(){
+void PersonalBudget::changePassword() {
 
-userManager.changePassword(getLoggedInUserId());
+    userManager.changePassword(getLoggedInUserId());
 }
+
+
+void PersonalBudget::addIncomes(){
+
+    incomesManager->addIncomes(getLoggedInUserId(), incomesManager->getLastIdIncomes());
+
+}
+
+
 
 void PersonalBudget::mainMenu() {
 
@@ -34,11 +48,7 @@ void PersonalBudget::mainMenu() {
             menuLoggedOutUser();
 
         } else {
-            /*
-                        if (sprawdzCzyVectorZAdresatamiJestPusty()) {
-                            wczytajAdresatowZalogowanegoUzytkownikaZPliku();
-                        }
-            */
+
             choice = userManager.selectOptionFromUserMenu();
             menuLoggedInUser();
 
@@ -70,7 +80,7 @@ void PersonalBudget::menuLoggedInUser() {
 
     switch (choice) {
     case '1':
-
+        addIncomes();
         break;
     case '2':
 
@@ -85,7 +95,7 @@ void PersonalBudget::menuLoggedInUser() {
 
         break;
     case '6':
-
+        incomesManager->showAllIncomes();
         break;
     case '7':
         changePassword();
