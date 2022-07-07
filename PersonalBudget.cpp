@@ -11,6 +11,7 @@ void PersonalBudget::loginUser() {
     if(userManager.isUserLoggedIn()){
 
             incomesManager = new IncomesManager(FILE_NAME_WITH_INCOMES, getLoggedInUserId());
+            expensesManager = new ExpensesManager(FILE_NAME_WITH_EXPENSES, getLoggedInUserId());
 
        }
 }
@@ -34,6 +35,12 @@ void PersonalBudget::changePassword() {
 void PersonalBudget::addIncomes(){
 
     incomesManager->addIncomes(getLoggedInUserId(), incomesManager->getLastIdIncomes());
+
+}
+
+void PersonalBudget::addExpenses(){
+
+expensesManager->addExpenses(getLoggedInUserId(), expensesManager->getLastIdExpenses());
 
 }
 
@@ -83,16 +90,17 @@ void PersonalBudget::menuLoggedInUser() {
         addIncomes();
         break;
     case '2':
-
+        addExpenses();
         break;
     case '3':
-
+        expensesManager->displayExpensesBilansCurrentMonth();
+        incomesManager->displayIncomesBilansCurrentMonth();
+        system("pause");
         break;
     case '4':
 
         break;
     case '5':
-
         break;
     case '6':
         incomesManager->showAllIncomes();

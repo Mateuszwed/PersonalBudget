@@ -145,3 +145,12 @@ string AuxiliaryMethods::replaceCommaToDot(string number) {
     return number;
 }
 
+int AuxiliaryMethods::getMonth(int date)
+{
+    int month;
+
+    month = date % 10000;
+    month = date / 100;
+
+    return month;
+}

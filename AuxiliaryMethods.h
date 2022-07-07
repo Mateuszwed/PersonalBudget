@@ -27,6 +27,7 @@ public:
     static bool checkIsYearIsLeapYear(int year);
     static bool checkFormatDate(string date);
     static string replaceCommaToDot(string number);
+    static int getMonth(int date);
 };
 
 #endif

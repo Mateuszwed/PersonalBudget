@@ -216,14 +216,43 @@ int IncomesManager::addIncomes(int loggedInUserId, int lastIdIncomes) {
 }
 
 
+vector <Incomes> IncomesManager::sortIncomesByDate() {
+
+    sort(incomesVector.begin(), incomesVector.end(),[] (Incomes& beginDate, Incomes& endDate) {
+        return beginDate.getDate() < endDate.getDate();
+    });
+
+    return incomesVector;
+}
+
+void IncomesManager::displayIncomesBilansCurrentMonth() {
+
+    int currentDate = AuxiliaryMethods::changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
+    int currentMonth = AuxiliaryMethods::getMonth(currentDate);
+    incomesVector = sortIncomesByDate();
+
+    for(int i = 0; i < incomesVector.size(); i++) {
+
+        if(currentMonth == AuxiliaryMethods::getMonth(incomesVector[i].getDate())) {
+            cout << "User id: " << incomesVector[i].getUserId() <<
+                 " Incomes id: " << incomesVector[i].getIncomesId() <<
+                 " Item: " << incomesVector[i].getItem() <<
+                 " Date: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 " Amount: " << incomesVector[i].getAmount() << endl;
+        }
+    }
+}
+
 void IncomesManager::showAllIncomes() {
+
+incomesVector = sortIncomesByDate();
 
     for(int i = 0; i < incomesVector.size(); i++) {
 
         cout << "User id: " << incomesVector[i].getUserId() <<
              " Incomes id: " << incomesVector[i].getIncomesId() <<
              " Item: " << incomesVector[i].getItem() <<
-             " Date: " << incomesVector[i].getDate() <<
+             " Date: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
              " Amount: " << incomesVector[i].getAmount() << endl;
 
     }

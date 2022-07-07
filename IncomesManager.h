@@ -6,7 +6,7 @@
 
 #include "Incomes.h"
 #include "FileWithIncomes.h"
-
+#include "BilansManager.h"
 
 using namespace std;
 
@@ -20,6 +20,7 @@ class IncomesManager {
     float getAmountFromUser();
     bool compareTwoDates(int dateTab[], int currentDateTab[]);
     void convertDateToArray(int dateArray[], string date);
+    vector <Incomes> sortIncomesByDate();
     string getItemFromUser();
 
 public:
@@ -35,6 +36,7 @@ public:
     int choiceDateToNewIncomes(char choice);
     bool checkCorrectEnterDate(string date);
     int getDataFromUser(string date);
+    void displayIncomesBilansCurrentMonth();
 };
 
 #endif
