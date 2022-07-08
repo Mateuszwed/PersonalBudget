@@ -27,23 +27,21 @@ Incomes IncomesManager::getDataNewIncomes(int loggedInUserId, int lastIdIncomes)
 }
 
 
-void IncomesManager::convertDateToArray(int dateArray[], string date) {
 
-    dateArray[0] = AuxiliaryMethods::convertStringToInt(date.substr(0,4));
-    dateArray[1] = AuxiliaryMethods::convertStringToInt(date.substr(5,2));
-    dateArray[2] = AuxiliaryMethods::convertStringToInt(date.substr(8,2));
+bool IncomesManager::checkDateIsNotHigherThanCurrentDate(int date) {
 
-}
+    int dateYear = AuxiliaryMethods::getYear(date);
+    int dateMonth = AuxiliaryMethods::getMonth(date);
+    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentDateYear = AuxiliaryMethods::getYear(currentDate);
+    int currentDateMonth = AuxiliaryMethods::getMonth(currentDate);
 
-
-bool IncomesManager::compareTwoDates(int dateTab[], int currentDateTab[]) {
-
-    if(dateTab[0] < 2000) {
+    if(dateYear < 2000) {
         return false;
-    } else if (dateTab[0] > currentDateTab[0]) {
+    } else if (dateYear > currentDateYear) {
         return false;
-    } else if (dateTab[0] == currentDateTab[0]) {
-        if (dateTab[1] > currentDateTab[1]) {
+    } else if (dateYear == currentDateYear) {
+        if (dateMonth > currentDateMonth) {
             return false;
         }
     }
@@ -53,22 +51,14 @@ bool IncomesManager::compareTwoDates(int dateTab[], int currentDateTab[]) {
 
 bool IncomesManager::checkCorrectEnterDate(string date) {
 
-    int dateArray[3];
-    int currentDateArray[3];
-    string currentDate = AuxiliaryMethods::getCurrentDate();
-
     if((date.length() < 10) || (date.length() > 10)) {
         return false;
     }
+    int dateInt = AuxiliaryMethods::changeFormatDateToInt(date);
+    int dateMonth = AuxiliaryMethods::getMonth(dateInt);
+    int dateYear = AuxiliaryMethods::getYear(dateInt);
 
-    convertDateToArray(dateArray, date);
-    convertDateToArray(currentDateArray, currentDate);
-
-    if(!compareTwoDates(dateArray, currentDateArray)) {
-        return false;
-    }
-
-    switch(dateArray[1]) {
+    switch(dateMonth) {
     case 1:
     case 3:
     case 5:
@@ -76,7 +66,7 @@ bool IncomesManager::checkCorrectEnterDate(string date) {
     case 8:
     case 10:
     case 12:
-        if((dateArray[2] < 1) || (dateArray[2] > 31)) {
+        if((dateMonth < 1) || (dateMonth > 31)) {
             return false;
         }
         break;
@@ -84,14 +74,14 @@ bool IncomesManager::checkCorrectEnterDate(string date) {
     case 6:
     case 9:
     case 11:
-        if((dateArray[2] < 1) || (dateArray[2] > 30)) {
+        if((dateMonth < 1) || (dateMonth > 30)) {
             return false;
         }
         break;
     case 2:
-        if(!AuxiliaryMethods::checkIsYearIsLeapYear(dateArray[0])) {
+        if(!AuxiliaryMethods::checkIsYearIsLeapYear(dateYear)) {
 
-            if((dateArray[2] < 1) || (dateArray[2] > 28)) {
+            if((dateMonth < 1) || (dateMonth > 28)) {
                 return false;
             }
         }
@@ -157,10 +147,43 @@ float IncomesManager::getAmountFromUser() {
 
 
 
-int IncomesManager::getDataFromUser(string date) {
+int IncomesManager::getDateFromUser() {
+    string date;
     bool ifCorrect = true;
     while(ifCorrect) {
         cout << "Podaj date przychodu: ";
+        date = AuxiliaryMethods::loadLine();
+        if((checkCorrectEnterDate(date)) && (checkDateIsNotHigherThanCurrentDate(AuxiliaryMethods::changeFormatDateToInt(date)))) {
+            return AuxiliaryMethods::changeFormatDateToInt(date);
+        } else {
+            cout << "Podales zly format daty." << endl;
+            ifCorrect = true;
+        }
+    }
+}
+
+
+int IncomesManager::getFirstDateFromUser() {
+    string date;
+    bool ifCorrect = true;
+    while(ifCorrect) {
+        cout << "Data od: ";
+        date = AuxiliaryMethods::loadLine();
+        if(checkCorrectEnterDate(date)) {
+            return AuxiliaryMethods::changeFormatDateToInt(date);
+        } else {
+            cout << "Podales zly format daty." << endl;
+            ifCorrect = true;
+        }
+    }
+}
+
+
+int IncomesManager::getSecondDateFromUser() {
+    string date = "";
+    bool ifCorrect = true;
+    while(ifCorrect) {
+        cout << "Data do: ";
         date = AuxiliaryMethods::loadLine();
         if(checkCorrectEnterDate(date)) {
             return AuxiliaryMethods::changeFormatDateToInt(date);
@@ -182,16 +205,14 @@ int IncomesManager::getLastIdIncomes() {
 
 int IncomesManager::choiceDateToNewIncomes(char choice) {
 
-    string date;
-
     switch(choice) {
     case 't':
     case 'T':
-        return AuxiliaryMethods::changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
+        return AuxiliaryMethods::getCurrentDateInteger();;
         break;
     case 'n':
     case 'N':
-        return getDataFromUser(date);
+        return getDateFromUser();
         break;
     default:
         cout << "Nieprawidlowy znak, wybierz <t/n> " << endl;
@@ -225,27 +246,116 @@ vector <Incomes> IncomesManager::sortIncomesByDate() {
     return incomesVector;
 }
 
-void IncomesManager::displayIncomesBilansCurrentMonth() {
 
-    int currentDate = AuxiliaryMethods::changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
-    int currentMonth = AuxiliaryMethods::getMonth(currentDate);
+float IncomesManager::sumIncomesBalanceCurrentMonth() {
+
+    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentYearAndMonth = currentDate / 100;
+    float sum = 0;
+    for(int i = 0; i < incomesVector.size(); i++) {
+
+        if(currentYearAndMonth == incomesVector[i].getDate() / 100) {
+            sum += incomesVector[i].getAmount();
+        }
+    }
+    return sum;
+}
+
+
+void IncomesManager::displayIncomesBalanceCurrentMonth() {
+
+    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentYearAndMonth = currentDate / 100;
     incomesVector = sortIncomesByDate();
 
     for(int i = 0; i < incomesVector.size(); i++) {
 
-        if(currentMonth == AuxiliaryMethods::getMonth(incomesVector[i].getDate())) {
-            cout << "User id: " << incomesVector[i].getUserId() <<
-                 " Incomes id: " << incomesVector[i].getIncomesId() <<
-                 " Item: " << incomesVector[i].getItem() <<
-                 " Date: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
-                 " Amount: " << incomesVector[i].getAmount() << endl;
+        if(currentYearAndMonth == incomesVector[i].getDate() / 100) {
+            cout <<"Przychod: " << incomesVector[i].getItem() <<
+                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
         }
     }
 }
 
+
+float IncomesManager::sumIncomesBalanceLastMonth() {
+
+    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastYearAndMonth = (lastDate / 100) - 1;
+    float sum = 0;
+
+    if(lastYearAndMonth & 100 == 0) {
+
+        lastYearAndMonth -= 100;
+        lastYearAndMonth += 12;
+    }
+
+    for(int i = 0; i < incomesVector.size(); i++) {
+
+        if(lastYearAndMonth == incomesVector[i].getDate() / 100) {
+            sum += incomesVector[i].getAmount();
+        }
+    }
+    return sum;
+}
+
+
+void IncomesManager::displayIncomesBalanceLastMonth() {
+
+    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastYearAndMonth = (lastDate / 100) - 1;
+    incomesVector = sortIncomesByDate();
+
+    if(lastYearAndMonth & 100 == 0) {
+
+        lastYearAndMonth -= 100;
+        lastYearAndMonth += 12;
+    }
+
+    for(int i = 0; i < incomesVector.size(); i++) {
+
+        if(lastYearAndMonth == incomesVector[i].getDate() / 100) {
+            cout <<"Przychod: " << incomesVector[i].getItem() <<
+                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
+        }
+    }
+}
+
+
+float IncomesManager::sumIncomesBalanceBetweenTwoDates(int firstDate, int secondDate) {
+
+    float sum = 0;
+
+    for(int i = 0; i < incomesVector.size(); i++) {
+
+        if((incomesVector[i].getDate() >= firstDate) && (incomesVector[i].getDate() <= secondDate)) {
+            sum += incomesVector[i].getAmount();
+        }
+    }
+    return sum;
+}
+
+
+void IncomesManager::displayIncomesBalanceBetweenTwoDates(int firstDate, int secondDate) {
+
+    incomesVector = sortIncomesByDate();
+
+    for(int i = 0; i < incomesVector.size(); i++) {
+
+        if((incomesVector[i].getDate() >= firstDate) && (incomesVector[i].getDate() <= secondDate)) {
+            cout <<"Przychod: " << incomesVector[i].getItem() <<
+                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
+        }
+    }
+}
+
+
 void IncomesManager::showAllIncomes() {
 
-incomesVector = sortIncomesByDate();
+    incomesVector = sortIncomesByDate();
 
     for(int i = 0; i < incomesVector.size(); i++) {
 

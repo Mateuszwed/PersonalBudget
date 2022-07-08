@@ -18,10 +18,9 @@ class ExpensesManager {
     Expenses getDataNewExpenses(int loggedInUserId, int lastIdExpenses);
     bool checkCorrectEnterAmount(string amount);
     float getAmountFromUser();
-    bool compareTwoDates(int dateTab[], int currentDateTab[]);
-    void convertDateToArray(int dateArray[], string date);
     string getItemFromUser();
     vector <Expenses> sortExpensesByDate();
+    bool checkDateIsNotHigherThanCurrentDate(int date);
 public:
 
     ExpensesManager(string fileNameWithExpenses, int loggedInUserId) : LOGGED_IN_USER_ID(loggedInUserId), fileWithExpenses(fileNameWithExpenses){
@@ -34,8 +33,13 @@ public:
     void showAllExpenses();
     int choiceDateToNewExpenses(char choice);
     bool checkCorrectEnterDate(string date);
-    int getDataFromUser(string date);
-    void displayExpensesBilansCurrentMonth();
+    int getDataFromUser();
+    void displayExpensesBalanceCurrentMonth();
+    float sumExpensesBalanceCurrentMonth();
+    void displayExpensesBalanceLastMonth();
+    float sumExpensesBalanceLastMonth();
+    float sumExpensesBalanceBetweenTwoDates(int firstDate, int secondDate);
+    void displayExpensesBalanceBetweenTwoDates(int firstDate, int secondDate);
 };
 
 #endif

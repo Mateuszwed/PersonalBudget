@@ -31,6 +31,16 @@ void loginExists();
 void changePassword();
 void addIncomes();
 void addExpenses();
+void displaySumBalance(float sumOfExpenses, float sumOfIncomes);
+void displayBalanceCurrentMonth();
+void displayBalanceLastMonth();
+float sumExpensesBalanceCurrentMonth();
+float sumIncomesBalanceCurrentMonth();
+float sumExpensesBalanceLastMonth();
+float sumIncomesBalanceLastMonth();
+void displayBalanceSheetForSelectedPeriod();
+int getFirstDateFromUserToBalanceBetweenDates();
+int getSecondDateFromUserToBalanceBetweenDates();
 
 public:
 

@@ -5,17 +5,12 @@
 #include <vector>
 #include <algorithm>
 
-#include "IncomesManager.h"
-#include "ExpensesManager.h"
-#include "AuxiliaryMethods.h"
+
 
 using namespace std;
 
 class BilansManager {
 
-
-vector <Expenses> expensesVector;
-vector <Incomes> incomesVector;
 
 public:
 

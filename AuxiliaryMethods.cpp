@@ -77,6 +77,30 @@ string AuxiliaryMethods::getCurrentDate() {
 }
 
 
+int AuxiliaryMethods::getCurrentDateInteger() {
+
+    string currentDate = "";
+    int date = 0;
+    SYSTEMTIME SystemTime;
+
+    GetSystemTime( & SystemTime );
+    currentDate = convertIntToString(SystemTime.wYear);
+    if(SystemTime.wMonth < 10) {
+        currentDate += "0" + convertIntToString(SystemTime.wMonth);
+    } else {
+        currentDate += convertIntToString(SystemTime.wMonth);
+    }
+    if(SystemTime.wDay < 10) {
+        currentDate += "0" + convertIntToString(SystemTime.wDay);
+    } else {
+        currentDate += convertIntToString(SystemTime.wDay);
+    }
+
+    date = convertStringToInt(currentDate);
+
+    return date;
+}
+
 float AuxiliaryMethods::convertStringToFloat(string number) {
     float numberFloat;
     numberFloat = stof(number);
@@ -145,12 +169,32 @@ string AuxiliaryMethods::replaceCommaToDot(string number) {
     return number;
 }
 
-int AuxiliaryMethods::getMonth(int date)
-{
-    int month;
+int AuxiliaryMethods::getMonth(int date) {
+
+    int month = 0;
 
     month = date % 10000;
-    month = date / 100;
+    month = month / 100;
 
     return month;
 }
+
+
+int AuxiliaryMethods::getDay(int date) {
+
+    int day = 0;
+
+    day = date % 100;
+
+    return day;
+}
+
+int AuxiliaryMethods::getYear(int date) {
+
+    int year = 0;
+
+    year = date / 10000;
+
+    return year;
+}
+

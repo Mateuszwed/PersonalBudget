@@ -3,14 +3,17 @@
 
 #include <iostream>
 #include <vector>
+#include <iomanip>
 
+#include "BilansManager.h"
 #include "Incomes.h"
 #include "FileWithIncomes.h"
-#include "BilansManager.h"
+
+
 
 using namespace std;
 
-class IncomesManager {
+class IncomesManager : public BilansManager{
 
     const int LOGGED_IN_USER_ID;
     vector <Incomes> incomesVector;
@@ -18,8 +21,9 @@ class IncomesManager {
     Incomes getDataNewIncomes(int loggedInUserId, int lastIdIncomes);
     bool checkCorrectEnterAmount(string amount);
     float getAmountFromUser();
-    bool compareTwoDates(int dateTab[], int currentDateTab[]);
-    void convertDateToArray(int dateArray[], string date);
+    //bool compareTwoDates(int dateTab[], int currentDateTab[]);
+    //void convertDateToArray(int dateArray[], int date);
+    bool checkDateIsNotHigherThanCurrentDate(int date);
     vector <Incomes> sortIncomesByDate();
     string getItemFromUser();
 
@@ -35,8 +39,15 @@ public:
     void showAllIncomes();
     int choiceDateToNewIncomes(char choice);
     bool checkCorrectEnterDate(string date);
-    int getDataFromUser(string date);
-    void displayIncomesBilansCurrentMonth();
+    int getDateFromUser();
+    void displayIncomesBalanceCurrentMonth();
+    float sumIncomesBalanceCurrentMonth();
+    void displayIncomesBalanceLastMonth();
+    float sumIncomesBalanceLastMonth();
+    void displayIncomesBalanceBetweenTwoDates(int firstDate, int secondDate);
+    float sumIncomesBalanceBetweenTwoDates(int firstDate, int secondDate);
+    int getFirstDateFromUser();
+    int getSecondDateFromUser();
 };
 
 #endif

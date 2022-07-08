@@ -20,6 +20,7 @@ public:
     static string changeFirstLetterForUpperCaseAndOthersForLowerCase(string tekst);
     static int convertStringToInt(string number);
     static string getCurrentDate();
+    static int getCurrentDateInteger();
     static float convertStringToFloat(string number);
     static string convertFloatToString(float number);
     static string changeFormatDateToDateWithHyphens(int date);
@@ -28,6 +29,8 @@ public:
     static bool checkFormatDate(string date);
     static string replaceCommaToDot(string number);
     static int getMonth(int date);
+    static int getDay(int date);
+    static int getYear(int date);
 };
 
 #endif

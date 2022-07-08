@@ -44,7 +44,74 @@ expensesManager->addExpenses(getLoggedInUserId(), expensesManager->getLastIdExpe
 
 }
 
+float PersonalBudget::sumExpensesBalanceCurrentMonth(){
 
+return expensesManager->sumExpensesBalanceCurrentMonth();
+}
+
+float PersonalBudget::sumIncomesBalanceCurrentMonth(){
+
+return incomesManager->sumIncomesBalanceCurrentMonth();
+}
+
+float PersonalBudget::sumExpensesBalanceLastMonth(){
+
+return expensesManager->sumExpensesBalanceLastMonth();
+}
+
+float PersonalBudget::sumIncomesBalanceLastMonth(){
+
+return incomesManager->sumIncomesBalanceLastMonth();
+}
+
+int PersonalBudget::getFirstDateFromUserToBalanceBetweenDates(){
+
+return incomesManager->getFirstDateFromUser();
+
+}
+
+int PersonalBudget::getSecondDateFromUserToBalanceBetweenDates(){
+
+return incomesManager->getSecondDateFromUser();
+
+}
+
+void PersonalBudget::displaySumBalance(float sumOfExpenses, float sumOfIncomes){
+
+float different = sumOfIncomes - sumOfExpenses;
+cout << endl << "-------------------------------------------------------------------------------------------------------------" << endl;
+cout << "Suma wydatkow: " << sumOfExpenses << "      Suma przychodow: " << sumOfIncomes << "     Roznica: " << different << endl << endl;
+
+}
+
+void PersonalBudget::displayBalanceCurrentMonth(){
+
+expensesManager->displayExpensesBalanceCurrentMonth();
+incomesManager->displayIncomesBalanceCurrentMonth();
+displaySumBalance(sumExpensesBalanceCurrentMonth(), sumIncomesBalanceCurrentMonth());
+system("pause");
+
+}
+
+void PersonalBudget::displayBalanceLastMonth(){
+
+expensesManager->displayExpensesBalanceLastMonth();
+incomesManager->displayIncomesBalanceLastMonth();
+displaySumBalance(sumExpensesBalanceLastMonth(), sumIncomesBalanceLastMonth());
+system("pause");
+
+}
+
+void PersonalBudget::displayBalanceSheetForSelectedPeriod(){
+
+int firstDate = getFirstDateFromUserToBalanceBetweenDates();
+int secondDate = getSecondDateFromUserToBalanceBetweenDates();
+expensesManager->displayExpensesBalanceBetweenTwoDates(firstDate, secondDate);
+incomesManager->displayIncomesBalanceBetweenTwoDates(firstDate, secondDate);
+displaySumBalance(expensesManager->sumExpensesBalanceBetweenTwoDates(firstDate, secondDate) , incomesManager->sumIncomesBalanceBetweenTwoDates(firstDate, secondDate));
+system("pause");
+
+}
 
 void PersonalBudget::mainMenu() {
 
@@ -93,22 +160,18 @@ void PersonalBudget::menuLoggedInUser() {
         addExpenses();
         break;
     case '3':
-        expensesManager->displayExpensesBilansCurrentMonth();
-        incomesManager->displayIncomesBilansCurrentMonth();
-        system("pause");
+        displayBalanceCurrentMonth();
         break;
     case '4':
-
+        displayBalanceLastMonth();
         break;
     case '5':
+        displayBalanceSheetForSelectedPeriod();
         break;
     case '6':
-        incomesManager->showAllIncomes();
-        break;
-    case '7':
         changePassword();
         break;
-    case '8':
+    case '7':
         loginExists();
         break;
 

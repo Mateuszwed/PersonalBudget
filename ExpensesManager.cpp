@@ -27,48 +27,37 @@ Expenses ExpensesManager::getDataNewExpenses(int loggedInUserId, int lastIdExpen
 }
 
 
-void ExpensesManager::convertDateToArray(int dateArray[], string date) {
+bool ExpensesManager::checkDateIsNotHigherThanCurrentDate(int date) {
 
-    dateArray[0] = AuxiliaryMethods::convertStringToInt(date.substr(0,4));
-    dateArray[1] = AuxiliaryMethods::convertStringToInt(date.substr(5,2));
-    dateArray[2] = AuxiliaryMethods::convertStringToInt(date.substr(8,2));
+    int dateYear = AuxiliaryMethods::getYear(date);
+    int dateMonth = AuxiliaryMethods::getMonth(date);
+    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentDateYear = AuxiliaryMethods::getYear(currentDate);
+    int currentDateMonth = AuxiliaryMethods::getMonth(currentDate);
 
-}
-
-
-bool ExpensesManager::compareTwoDates(int dateTab[], int currentDateTab[]) {
-
-    if(dateTab[0] < 2000) {
+    if(dateYear < 2000) {
         return false;
-    } else if (dateTab[0] > currentDateTab[0]) {
+    } else if (dateYear > currentDateYear) {
         return false;
-    } else if (dateTab[0] == currentDateTab[0]) {
-        if (dateTab[1] > currentDateTab[1]) {
+    } else if (dateYear == currentDateYear) {
+        if (dateMonth > currentDateMonth) {
             return false;
         }
     }
     return true;
 }
 
-
 bool ExpensesManager::checkCorrectEnterDate(string date) {
-
-    int dateArray[3];
-    int currentDateArray[3];
-    string currentDate = AuxiliaryMethods::getCurrentDate();
 
     if((date.length() < 10) || (date.length() > 10)) {
         return false;
     }
+    int dateInt = AuxiliaryMethods::changeFormatDateToInt(date);
+    int dateMonth = AuxiliaryMethods::getMonth(dateInt);
+    int dateYear = AuxiliaryMethods::getYear(dateInt);
 
-    convertDateToArray(dateArray, date);
-    convertDateToArray(currentDateArray, currentDate);
 
-    if(!compareTwoDates(dateArray, currentDateArray)) {
-        return false;
-    }
-
-    switch(dateArray[1]) {
+    switch(dateMonth) {
     case 1:
     case 3:
     case 5:
@@ -76,7 +65,7 @@ bool ExpensesManager::checkCorrectEnterDate(string date) {
     case 8:
     case 10:
     case 12:
-        if((dateArray[2] < 1) || (dateArray[2] > 31)) {
+        if((dateMonth < 1) || (dateMonth > 31)) {
             return false;
         }
         break;
@@ -84,14 +73,14 @@ bool ExpensesManager::checkCorrectEnterDate(string date) {
     case 6:
     case 9:
     case 11:
-        if((dateArray[2] < 1) || (dateArray[2] > 30)) {
+        if((dateMonth < 1) || (dateMonth > 30)) {
             return false;
         }
         break;
     case 2:
-        if(!AuxiliaryMethods::checkIsYearIsLeapYear(dateArray[0])) {
+        if(!AuxiliaryMethods::checkIsYearIsLeapYear(dateYear)) {
 
-            if((dateArray[2] < 1) || (dateArray[2] > 28)) {
+            if((dateMonth < 1) || (dateMonth > 28)) {
                 return false;
             }
         }
@@ -148,7 +137,7 @@ float ExpensesManager::getAmountFromUser() {
         if(checkCorrectEnterAmount(amount)) {
             return AuxiliaryMethods::convertStringToFloat(amount);
         } else {
-            cout << "Podales zly format wysokosci przychodu." << endl;
+            cout << "Podales zly format wysokosci wydatku." << endl;
             ifCorrect = true;
         }
 
@@ -157,12 +146,13 @@ float ExpensesManager::getAmountFromUser() {
 
 
 
-int ExpensesManager::getDataFromUser(string date) {
+int ExpensesManager::getDataFromUser() {
+    string date = "";
     bool ifCorrect = true;
     while(ifCorrect) {
         cout << "Podaj date przychodu: ";
         date = AuxiliaryMethods::loadLine();
-        if(checkCorrectEnterDate(date)) {
+        if((checkCorrectEnterDate(date)) && (checkDateIsNotHigherThanCurrentDate(AuxiliaryMethods::changeFormatDateToInt(date)))) {
             return AuxiliaryMethods::changeFormatDateToInt(date);
         } else {
             cout << "Podales zly format daty." << endl;
@@ -182,8 +172,6 @@ int ExpensesManager::getLastIdExpenses() {
 
 int ExpensesManager::choiceDateToNewExpenses(char choice) {
 
-    string date;
-
     switch(choice) {
     case 't':
     case 'T':
@@ -191,7 +179,7 @@ int ExpensesManager::choiceDateToNewExpenses(char choice) {
         break;
     case 'n':
     case 'N':
-        return getDataFromUser(date);
+        return getDataFromUser();
         break;
     default:
         cout << "Nieprawidlowy znak, wybierz <t/n> " << endl;
@@ -215,6 +203,7 @@ int ExpensesManager::addExpenses(int loggedInUserId, int lastIdExpenses) {
     return ++lastIdExpenses;
 }
 
+
 vector <Expenses> ExpensesManager::sortExpensesByDate() {
 
     sort(expensesVector.begin(), expensesVector.end(),[] (Expenses& beginDate, Expenses& endDate) {
@@ -224,24 +213,112 @@ vector <Expenses> ExpensesManager::sortExpensesByDate() {
     return expensesVector;
 }
 
-void ExpensesManager::displayExpensesBilansCurrentMonth() {
+float ExpensesManager::sumExpensesBalanceCurrentMonth() {
 
-    int currentDate = AuxiliaryMethods::changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
-    int currentMonth = AuxiliaryMethods::getMonth(currentDate);
+    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentYearAndMonth = currentDate / 100;
+    float sum = 0;
+
+    for(int i = 0; i < expensesVector.size(); i++) {
+
+        if(currentYearAndMonth == expensesVector[i].getDate() / 100) {
+        sum += expensesVector[i].getAmount();
+        }
+    }
+    return sum;
+}
+
+
+void ExpensesManager::displayExpensesBalanceCurrentMonth() {
+
+    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentYearAndMonth = currentDate / 100;
     expensesVector = sortExpensesByDate();
 
     for(int i = 0; i < expensesVector.size(); i++) {
 
-        if(currentMonth == AuxiliaryMethods::getMonth(expensesVector[i].getDate())) {
-            cout << "User id: " << expensesVector[i].getUserId() <<
-                 " Expendes id: " << expensesVector[i].getExpensesId() <<
-                 " Item: " << expensesVector[i].getItem() <<
-                 " Date: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
-                 " Amount: " << expensesVector[i].getAmount() << endl;
+        if(currentYearAndMonth == expensesVector[i].getDate() / 100) {
+            cout <<"Wydatek: " << expensesVector[i].getItem() <<
+                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << expensesVector[i].getAmount() << endl;
         }
     }
-
 }
+
+
+float ExpensesManager::sumExpensesBalanceLastMonth() {
+
+    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastYearAndMonth = (lastDate / 100) - 1;
+    float sum = 0;
+
+    if(lastYearAndMonth & 100 == 0) {
+
+        lastYearAndMonth -= 100;
+        lastYearAndMonth += 12;
+    }
+
+    for(int i = 0; i < expensesVector.size(); i++) {
+
+        if(lastYearAndMonth == expensesVector[i].getDate() / 100) {
+            sum += expensesVector[i].getAmount();
+        }
+    }
+    return sum;
+}
+
+
+void ExpensesManager::displayExpensesBalanceLastMonth() {
+
+    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastYearAndMonth = (lastDate / 100) - 1;
+    expensesVector = sortExpensesByDate();
+
+    if(lastYearAndMonth & 100 == 0) {
+
+        lastYearAndMonth -= 100;
+        lastYearAndMonth += 12;
+    }
+
+    for(int i = 0; i < expensesVector.size(); i++) {
+
+        if(lastYearAndMonth == expensesVector[i].getDate() / 100) {
+            cout <<"Wydatek: " << expensesVector[i].getItem() <<
+                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << expensesVector[i].getAmount() << endl;
+        }
+    }
+}
+
+
+float ExpensesManager::sumExpensesBalanceBetweenTwoDates(int firstDate, int secondDate) {
+
+    float sum = 0;
+
+    for(int i = 0; i < expensesVector.size(); i++) {
+
+        if((expensesVector[i].getDate() >= firstDate) && (expensesVector[i].getDate() <= secondDate)) {
+            sum += expensesVector[i].getAmount();
+        }
+    }
+    return sum;
+}
+
+
+void ExpensesManager::displayExpensesBalanceBetweenTwoDates(int firstDate, int secondDate) {
+
+    expensesVector = sortExpensesByDate();
+
+    for(int i = 0; i < expensesVector.size(); i++) {
+
+        if((expensesVector[i].getDate() >= firstDate) && (expensesVector[i].getDate() <= secondDate)) {
+            cout <<"Wydatek: " << expensesVector[i].getItem() <<
+                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << expensesVector[i].getAmount() << endl;
+        }
+    }
+}
+
 
 
 
