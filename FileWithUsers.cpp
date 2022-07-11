@@ -2,14 +2,14 @@
 
 
 
-void FileWithUsers::addUserToFile(User user){
+void FileWithUsers::addUserToFile(User user) {
 
 
     bool fileExists = xml.Load( FILE_NAME );
 
-    if(!fileExists){
+    if(!fileExists) {
 
-    xml.AddElem( "Users" );
+        xml.AddElem( "Users" );
 
     }
     xml.FindElem();
@@ -26,35 +26,37 @@ void FileWithUsers::addUserToFile(User user){
 
 }
 
-vector <User> FileWithUsers::loadUsersFromFile(){
+
+vector <User> FileWithUsers::loadUsersFromFile() {
 
     User user;
     vector <User> users;
     xml.Load( FILE_NAME );
     xml.FindElem("Users");
     xml.IntoElem();
-    while(xml.FindElem("user")){
+    while(xml.FindElem("user")) {
 
-    xml.IntoElem();
-    xml.FindElem("id");
-    user.setUserId(AuxiliaryMethods::convertStringToInt(xml.GetData()));
-    xml.FindElem("login");
-    user.setLogin(xml.GetData());
-    xml.FindElem("password");
-    user.setPassword(xml.GetData());
-    xml.FindElem("name");
-    user.setName(xml.GetData());
-    xml.FindElem("surname");
-    user.setSurname(xml.GetData());
-    xml.OutOfElem();
+        xml.IntoElem();
+        xml.FindElem("id");
+        user.setUserId(AuxiliaryMethods::convertStringToInt(xml.GetData()));
+        xml.FindElem("login");
+        user.setLogin(xml.GetData());
+        xml.FindElem("password");
+        user.setPassword(xml.GetData());
+        xml.FindElem("name");
+        user.setName(xml.GetData());
+        xml.FindElem("surname");
+        user.setSurname(xml.GetData());
+        xml.OutOfElem();
 
-    users.push_back(user);
+        users.push_back(user);
     }
 
     return users;
 }
 
-void FileWithUsers::changePassword(int loggedIdUser, string newPassword){
+
+void FileWithUsers::changePassword(int loggedIdUser, string newPassword) {
 
     string id;
 
