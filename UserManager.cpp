@@ -24,9 +24,9 @@ User UserManager::getNewUserData() {
     cout << "Podaj haslo: ";
     user.setPassword(AuxiliaryMethods::loadLine());
     cout << "Podaj imie: ";
-    user.setName(AuxiliaryMethods::loadLine());
+    user.setName(AuxiliaryMethods::changeFirstLetterForUpperCaseAndOthersForLowerCase(AuxiliaryMethods::loadLine()));
     cout << "Podaj nazwisko: ";
-    user.setSurname(AuxiliaryMethods::loadLine());
+    user.setSurname(AuxiliaryMethods::changeFirstLetterForUpperCaseAndOthersForLowerCase(AuxiliaryMethods::loadLine()));
 
     return user;
 }
@@ -133,15 +133,14 @@ char UserManager::selectOptionFromUserMenu() {
     system("cls");
     cout << " >>> MENU UZYTKOWNIKA <<<" << endl;
     cout << "---------------------------" << endl;
-    cout << "1. Dodaj adresata" << endl;
-    cout << "2. Wyszukaj po imieniu" << endl;
-    cout << "3. Wyszukaj po nazwisku" << endl;
-    cout << "4. Wyswietl adresatow" << endl;
-    cout << "5. Usun adresata" << endl;
-    cout << "6. Edytuj adresata" << endl;
+    cout << "1. Dodaj przychod" << endl;
+    cout << "2. Dodaj wydatek" << endl;
+    cout << "3. Bilans z biezacego miesiaca" << endl;
+    cout << "4. Bilans z zeszlego miesiaca" << endl;
+    cout << "5. Bilans z wybranego okresu" << endl;
     cout << "---------------------------" << endl;
-    cout << "7. Zmien haslo" << endl;
-    cout << "8. Wyloguj sie" << endl;
+    cout << "6. Zmien haslo" << endl;
+    cout << "7. Wyloguj sie" << endl;
     cout << "---------------------------" << endl;
     cout << "Twoj wybor: ";
     choice = AuxiliaryMethods::loadChar();

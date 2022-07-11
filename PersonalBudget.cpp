@@ -8,6 +8,12 @@ int PersonalBudget::getLoggedInUserId() {
 void PersonalBudget::loginUser() {
 
     userManager.loginUser();
+    if(userManager.isUserLoggedIn()){
+
+            incomesManager = new IncomesManager(FILE_NAME_WITH_INCOMES, getLoggedInUserId());
+            expensesManager = new ExpensesManager(FILE_NAME_WITH_EXPENSES, getLoggedInUserId());
+
+       }
 }
 
 void PersonalBudget::registerUser() {
@@ -20,26 +26,118 @@ void PersonalBudget::loginExists() {
     userManager.loginExists();
 }
 
-void PersonalBudget::changePassword(){
+void PersonalBudget::changePassword() {
 
-userManager.changePassword(getLoggedInUserId());
+    userManager.changePassword(getLoggedInUserId());
 }
+
+
+void PersonalBudget::addIncomes(){
+
+    incomesManager->addIncomes(getLoggedInUserId(), incomesManager->getLastIdIncomes());
+
+}
+
+void PersonalBudget::addExpenses(){
+
+expensesManager->addExpenses(getLoggedInUserId(), expensesManager->getLastIdExpenses());
+
+}
+
+float PersonalBudget::sumExpensesBalanceCurrentMonth(){
+
+return expensesManager->sumExpensesBalanceCurrentMonth();
+}
+
+float PersonalBudget::sumIncomesBalanceCurrentMonth(){
+
+return incomesManager->sumIncomesBalanceCurrentMonth();
+}
+
+float PersonalBudget::sumExpensesBalanceLastMonth(){
+
+return expensesManager->sumExpensesBalanceLastMonth();
+}
+
+float PersonalBudget::sumIncomesBalanceLastMonth(){
+
+return incomesManager->sumIncomesBalanceLastMonth();
+}
+
+int PersonalBudget::getFirstDateFromUserToBalanceBetweenDates(){
+
+return balanceManager->getFirstDateFromUser();
+
+}
+
+int PersonalBudget::getSecondDateFromUserToBalanceBetweenDates(){
+
+return balanceManager->getSecondDateFromUser();
+
+}
+
+void PersonalBudget::displaySumBalance(float sumOfExpenses, float sumOfIncomes){
+
+float different = sumOfIncomes - sumOfExpenses;
+cout << endl << "-------------------------------------------------------------------------------------------------------------" << endl;
+cout << "Suma wydatkow: " << sumOfExpenses << "      Suma przychodow: " << sumOfIncomes << "     Roznica: " << different << endl << endl;
+
+}
+
+void PersonalBudget::displayBalanceCurrentMonth(){
+
+expensesManager->displayExpensesBalanceCurrentMonth();
+incomesManager->displayIncomesBalanceCurrentMonth();
+displaySumBalance(sumExpensesBalanceCurrentMonth(), sumIncomesBalanceCurrentMonth());
+system("pause");
+
+}
+
+void PersonalBudget::displayBalanceLastMonth(){
+
+expensesManager->displayExpensesBalanceLastMonth();
+incomesManager->displayIncomesBalanceLastMonth();
+displaySumBalance(sumExpensesBalanceLastMonth(), sumIncomesBalanceLastMonth());
+system("pause");
+
+}
+
+void PersonalBudget::displayBalanceSheetForSelectedPeriod(){
+
+int firstDate = getFirstDateFromUserToBalanceBetweenDates();
+int secondDate = getSecondDateFromUserToBalanceBetweenDates();
+expensesManager->displayExpensesBalanceBetweenTwoDates(firstDate, secondDate);
+incomesManager->displayIncomesBalanceBetweenTwoDates(firstDate, secondDate);
+displaySumBalance(expensesManager->sumExpensesBalanceBetweenTwoDates(firstDate, secondDate) , incomesManager->sumIncomesBalanceBetweenTwoDates(firstDate, secondDate));
+system("pause");
+
+}
+
+
+char PersonalBudget::selectOptionFromMainMenu(){
+
+return userManager.selectOptionFromMainMenu();
+}
+
+
+char PersonalBudget::selectOptionFromUserMenu(){
+
+return userManager.selectOptionFromUserMenu();
+}
+
+
 
 void PersonalBudget::mainMenu() {
 
     while (true) {
         if (!userManager.isUserLoggedIn()) {
-            choice = userManager.selectOptionFromMainMenu();
+            choice = selectOptionFromMainMenu();
 
             menuLoggedOutUser();
 
         } else {
-            /*
-                        if (sprawdzCzyVectorZAdresatamiJestPusty()) {
-                            wczytajAdresatowZalogowanegoUzytkownikaZPliku();
-                        }
-            */
-            choice = userManager.selectOptionFromUserMenu();
+
+            choice = selectOptionFromUserMenu();
             menuLoggedInUser();
 
         }
@@ -70,27 +168,24 @@ void PersonalBudget::menuLoggedInUser() {
 
     switch (choice) {
     case '1':
-
+        addIncomes();
         break;
     case '2':
-
+        addExpenses();
         break;
     case '3':
-
+        displayBalanceCurrentMonth();
         break;
     case '4':
-
+        displayBalanceLastMonth();
         break;
     case '5':
-
+        displayBalanceSheetForSelectedPeriod();
         break;
     case '6':
-
-        break;
-    case '7':
         changePassword();
         break;
-    case '8':
+    case '7':
         loginExists();
         break;
 
