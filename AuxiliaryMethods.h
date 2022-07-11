@@ -23,14 +23,8 @@ public:
     static int getCurrentDateInteger();
     static float convertStringToFloat(string number);
     static string convertFloatToString(float number);
-    static string changeFormatDateToDateWithHyphens(int date);
-    static int changeFormatDateToInt(string dateStr);
-    static bool checkIsYearIsLeapYear(int year);
-    static bool checkFormatDate(string date);
     static string replaceCommaToDot(string number);
-    static int getMonth(int date);
-    static int getDay(int date);
-    static int getYear(int date);
+
 };
 
 #endif

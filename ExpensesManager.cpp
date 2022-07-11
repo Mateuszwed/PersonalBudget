@@ -7,7 +7,7 @@ Expenses ExpensesManager::getDataNewExpenses(int loggedInUserId, int lastIdExpen
     int date = 0;
     float amount = 0;
     string item = "";
-    expenses.setExpensesId(++lastIdExpenses);
+    expenses.setId(++lastIdExpenses);
     expenses.setUserId(loggedInUserId);
 
     cout << "Czy chcesz dodac wydatek z dzisiejsza data <t/n>?:  " << AuxiliaryMethods::getCurrentDate() << endl;
@@ -66,7 +66,7 @@ float ExpensesManager::getAmountFromUser() {
     while(ifCorrect) {
         cout << "Podaj wysokosc wydatku: ";
         amount = AuxiliaryMethods::loadLine();
-        amount = AuxiliaryMethods::replaceCommaToDot(amount);
+        amount = replaceCommaToDot(amount);
         if(checkCorrectEnterAmount(amount)) {
             return AuxiliaryMethods::convertStringToFloat(amount);
         } else {
@@ -85,8 +85,8 @@ int ExpensesManager::getDataFromUser() {
     while(ifCorrect) {
         cout << "Podaj date przychodu: ";
         date = AuxiliaryMethods::loadLine();
-        if((checkCorrectEnterDate(date)) && (checkDateIsNotHigherThanCurrentDate(AuxiliaryMethods::changeFormatDateToInt(date)))) {
-            return AuxiliaryMethods::changeFormatDateToInt(date);
+        if((checkCorrectEnterDate(date)) && (checkDateIsNotHigherThanCurrentDate(changeFormatDateToInt(date)))) {
+            return changeFormatDateToInt(date);
         } else {
             cout << "Podales zly format daty." << endl;
             ifCorrect = true;
@@ -108,7 +108,7 @@ int ExpensesManager::choiceDateToNewExpenses(char choice) {
     switch(choice) {
     case 't':
     case 'T':
-        return AuxiliaryMethods::changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
+        return changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
         break;
     case 'n':
     case 'N':
@@ -139,8 +139,8 @@ int ExpensesManager::addExpenses(int loggedInUserId, int lastIdExpenses) {
 
 vector <Expenses> ExpensesManager::sortExpensesByDate() {
 
-    sort(expensesVector.begin(), expensesVector.end(),[] (Expenses& beginDate, Expenses& endDate) {
-        return beginDate.getDate() < endDate.getDate();
+    sort(expensesVector.begin(), expensesVector.end(),[] (Expenses& firstExpense, Expenses& secondExpense) {
+        return firstExpense.getDate() < secondExpense.getDate();
     });
 
     return expensesVector;
@@ -148,7 +148,7 @@ vector <Expenses> ExpensesManager::sortExpensesByDate() {
 
 float ExpensesManager::sumExpensesBalanceCurrentMonth() {
 
-    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentDate = getCurrentDateInteger();
     int currentYearAndMonth = currentDate / 100;
     float sum = 0;
 
@@ -164,16 +164,17 @@ float ExpensesManager::sumExpensesBalanceCurrentMonth() {
 
 void ExpensesManager::displayExpensesBalanceCurrentMonth() {
 
-    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentDate = getCurrentDateInteger();
     int currentYearAndMonth = currentDate / 100;
     expensesVector = sortExpensesByDate();
 
     for(int i = 0; i < expensesVector.size(); i++) {
 
         if(currentYearAndMonth == expensesVector[i].getDate() / 100) {
-            cout <<"Wydatek: " << expensesVector[i].getItem() <<
-                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
-                 setw(30) << "Kwota: " << expensesVector[i].getAmount() << endl;
+
+            cout << "Wydatek: " << expensesVector[i].getItem() <<
+                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << fixed << setprecision(2) << expensesVector[i].getAmount() << endl;
         }
     }
 }
@@ -181,7 +182,7 @@ void ExpensesManager::displayExpensesBalanceCurrentMonth() {
 
 float ExpensesManager::sumExpensesBalanceLastMonth() {
 
-    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastDate = getCurrentDateInteger();
     int lastYearAndMonth = (lastDate / 100) - 1;
     float sum = 0;
 
@@ -203,7 +204,7 @@ float ExpensesManager::sumExpensesBalanceLastMonth() {
 
 void ExpensesManager::displayExpensesBalanceLastMonth() {
 
-    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastDate = getCurrentDateInteger();
     int lastYearAndMonth = (lastDate / 100) - 1;
     expensesVector = sortExpensesByDate();
 
@@ -216,9 +217,10 @@ void ExpensesManager::displayExpensesBalanceLastMonth() {
     for(int i = 0; i < expensesVector.size(); i++) {
 
         if(lastYearAndMonth == expensesVector[i].getDate() / 100) {
-            cout <<"Wydatek: " << expensesVector[i].getItem() <<
-                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
-                 setw(30) << "Kwota: " << expensesVector[i].getAmount() << endl;
+
+            cout << "Wydatek: " << expensesVector[i].getItem() <<
+                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << fixed << setprecision(2) << expensesVector[i].getAmount() << endl;
         }
     }
 }
@@ -245,24 +247,12 @@ void ExpensesManager::displayExpensesBalanceBetweenTwoDates(int firstDate, int s
     for(int i = 0; i < expensesVector.size(); i++) {
 
         if((expensesVector[i].getDate() >= firstDate) && (expensesVector[i].getDate() <= secondDate)) {
-            cout <<"Wydatek: " << expensesVector[i].getItem() <<
-                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
-                 setw(30) << "Kwota: " << expensesVector[i].getAmount() << endl;
+
+            cout << "Wydatek: " << expensesVector[i].getItem() <<
+                 setw(31 - expensesVector[i].getItem().size()) << " Data: " << changeFormatDateToDateWithHyphens(expensesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << fixed << setprecision(2) << expensesVector[i].getAmount() << endl;
         }
     }
 }
 
 
-void ExpensesManager::showAllExpenses() {
-
-    for(int i = 0; i < expensesVector.size(); i++) {
-
-        cout << "User id: " << expensesVector[i].getUserId() <<
-             " Expenses id: " << expensesVector[i].getExpensesId() <<
-             " Item: " << expensesVector[i].getItem() <<
-             " Date: " << expensesVector[i].getDate() <<
-             " Amount: " << expensesVector[i].getAmount() << endl;
-
-    }
-    system("pause");
-}

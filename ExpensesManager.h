@@ -31,7 +31,6 @@ public:
     };
     int getLastIdExpenses();
     int addExpenses(int loggedInUserId, int lastIdExpenses);
-    void showAllExpenses();
     int choiceDateToNewExpenses(char choice);
     int getDataFromUser();
     void displayExpensesBalanceCurrentMonth();

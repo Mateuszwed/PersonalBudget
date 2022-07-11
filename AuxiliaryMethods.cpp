@@ -77,30 +77,6 @@ string AuxiliaryMethods::getCurrentDate() {
 }
 
 
-int AuxiliaryMethods::getCurrentDateInteger() {
-
-    string currentDate = "";
-    int date = 0;
-    SYSTEMTIME SystemTime;
-
-    GetSystemTime( & SystemTime );
-    currentDate = convertIntToString(SystemTime.wYear);
-    if(SystemTime.wMonth < 10) {
-        currentDate += "0" + convertIntToString(SystemTime.wMonth);
-    } else {
-        currentDate += convertIntToString(SystemTime.wMonth);
-    }
-    if(SystemTime.wDay < 10) {
-        currentDate += "0" + convertIntToString(SystemTime.wDay);
-    } else {
-        currentDate += convertIntToString(SystemTime.wDay);
-    }
-
-    date = convertStringToInt(currentDate);
-
-    return date;
-}
-
 float AuxiliaryMethods::convertStringToFloat(string number) {
     float numberFloat;
     numberFloat = stof(number);
@@ -118,83 +94,5 @@ string str(ss.str());
 
 return str;
 
-}
-
-
-string AuxiliaryMethods::changeFormatDateToDateWithHyphens(int date) {
-
-    string dateWithHyphens = convertIntToString(date);
-    dateWithHyphens.insert(4,"-");
-    dateWithHyphens.insert(7,"-");
-
-    return dateWithHyphens;
-
-}
-
-
-int AuxiliaryMethods::changeFormatDateToInt(string dateStr) {
-
-    int date;
-
-    dateStr.erase(4,1);
-    dateStr.erase(6,1);
-
-    date = convertStringToInt(dateStr);
-
-    return date;
-
-
-}
-
-
-bool AuxiliaryMethods::checkIsYearIsLeapYear(int year) {
-
-    if((year%4==0 && year%100!=0) || year%400==0) {
-        return true;
-    }
-    return false;
-}
-
-
-string AuxiliaryMethods::replaceCommaToDot(string number) {
-
-    for(int i = 0; i < number.length(); i++) {
-
-        if(number[i] == ',') {
-            number[i] = '.';
-        } else {
-            continue;
-        }
-    }
-    return number;
-}
-
-int AuxiliaryMethods::getMonth(int date) {
-
-    int month = 0;
-
-    month = date % 10000;
-    month = month / 100;
-
-    return month;
-}
-
-
-int AuxiliaryMethods::getDay(int date) {
-
-    int day = 0;
-
-    day = date % 100;
-
-    return day;
-}
-
-int AuxiliaryMethods::getYear(int date) {
-
-    int year = 0;
-
-    year = date / 10000;
-
-    return year;
 }
 

@@ -8,11 +8,12 @@
 #include "Markup.h"
 #include "Expenses.h"
 #include "AuxiliaryMethods.h"
+#include "BalanceManager.h"
 
 class FileWithExpenses {
 
 const string FILE_NAME_WITH_EXPENSES;
-CMarkup xml;
+
 
 public:
 

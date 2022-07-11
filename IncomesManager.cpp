@@ -8,7 +8,7 @@ Incomes IncomesManager::getDataNewIncomes(int loggedInUserId, int lastIdIncomes)
     int date = 0;
     float amount = 0;
     string item = "";
-    incomes.setIncomesId(++lastIdIncomes);
+    incomes.setId(++lastIdIncomes);
     incomes.setUserId(loggedInUserId);
 
     cout << "Czy chcesz dodac przychod z dzisiejsza data <t/n>?:  " << AuxiliaryMethods::getCurrentDate() << endl;
@@ -68,7 +68,7 @@ float IncomesManager::getAmountFromUser() {
     while(ifCorrect) {
         cout << "Podaj wysokosc przchodu: ";
         amount = AuxiliaryMethods::loadLine();
-        amount = AuxiliaryMethods::replaceCommaToDot(amount);
+        amount = replaceCommaToDot(amount);
         if(checkCorrectEnterAmount(amount)) {
             return AuxiliaryMethods::convertStringToFloat(amount);
         } else {
@@ -87,8 +87,8 @@ int IncomesManager::getDateFromUser() {
     while(ifCorrect) {
         cout << "Podaj date przychodu: ";
         date = AuxiliaryMethods::loadLine();
-        if((checkCorrectEnterDate(date)) && (checkDateIsNotHigherThanCurrentDate(AuxiliaryMethods::changeFormatDateToInt(date)))) {
-            return AuxiliaryMethods::changeFormatDateToInt(date);
+        if((checkCorrectEnterDate(date)) && (checkDateIsNotHigherThanCurrentDate(changeFormatDateToInt(date)))) {
+            return changeFormatDateToInt(date);
         } else {
             cout << "Podales zly format daty." << endl;
             ifCorrect = true;
@@ -109,7 +109,7 @@ int IncomesManager::choiceDateToNewIncomes(char choice) {
     switch(choice) {
     case 't':
     case 'T':
-        return AuxiliaryMethods::getCurrentDateInteger();;
+        return getCurrentDateInteger();;
         break;
     case 'n':
     case 'N':
@@ -140,8 +140,8 @@ int IncomesManager::addIncomes(int loggedInUserId, int lastIdIncomes) {
 
 vector <Incomes> IncomesManager::sortIncomesByDate() {
 
-    sort(incomesVector.begin(), incomesVector.end(),[] (Incomes& beginDate, Incomes& endDate) {
-        return beginDate.getDate() < endDate.getDate();
+    sort(incomesVector.begin(), incomesVector.end(),[] (Incomes& firstIncome, Incomes& secondIncome) {
+        return firstIncome.getDate() < secondIncome.getDate();
     });
 
     return incomesVector;
@@ -150,7 +150,7 @@ vector <Incomes> IncomesManager::sortIncomesByDate() {
 
 float IncomesManager::sumIncomesBalanceCurrentMonth() {
 
-    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentDate = getCurrentDateInteger();
     int currentYearAndMonth = currentDate / 100;
     float sum = 0;
     for(int i = 0; i < incomesVector.size(); i++) {
@@ -165,7 +165,7 @@ float IncomesManager::sumIncomesBalanceCurrentMonth() {
 
 void IncomesManager::displayIncomesBalanceCurrentMonth() {
 
-    int currentDate = AuxiliaryMethods::getCurrentDateInteger();
+    int currentDate = getCurrentDateInteger();
     int currentYearAndMonth = currentDate / 100;
     incomesVector = sortIncomesByDate();
 
@@ -173,8 +173,8 @@ void IncomesManager::displayIncomesBalanceCurrentMonth() {
 
         if(currentYearAndMonth == incomesVector[i].getDate() / 100) {
             cout <<"Przychod: " << incomesVector[i].getItem() <<
-                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
-                 setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
+                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << fixed << setprecision(2) << incomesVector[i].getAmount() << endl;
         }
     }
 }
@@ -182,7 +182,7 @@ void IncomesManager::displayIncomesBalanceCurrentMonth() {
 
 float IncomesManager::sumIncomesBalanceLastMonth() {
 
-    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastDate = getCurrentDateInteger();
     int lastYearAndMonth = (lastDate / 100) - 1;
     float sum = 0;
 
@@ -204,7 +204,7 @@ float IncomesManager::sumIncomesBalanceLastMonth() {
 
 void IncomesManager::displayIncomesBalanceLastMonth() {
 
-    int lastDate = AuxiliaryMethods::getCurrentDateInteger();
+    int lastDate = getCurrentDateInteger();
     int lastYearAndMonth = (lastDate / 100) - 1;
     incomesVector = sortIncomesByDate();
 
@@ -218,8 +218,8 @@ void IncomesManager::displayIncomesBalanceLastMonth() {
 
         if(lastYearAndMonth == incomesVector[i].getDate() / 100) {
             cout <<"Przychod: " << incomesVector[i].getItem() <<
-                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
-                 setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
+                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << fixed << setprecision(2) << incomesVector[i].getAmount() << endl;
         }
     }
 }
@@ -247,8 +247,8 @@ void IncomesManager::displayIncomesBalanceBetweenTwoDates(int firstDate, int sec
 
         if((incomesVector[i].getDate() >= firstDate) && (incomesVector[i].getDate() <= secondDate)) {
             cout <<"Przychod: " << incomesVector[i].getItem() <<
-                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
-                 setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
+                 setw(30 - incomesVector[i].getItem().size()) << " Data: " << changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
+                 setw(30) << "Kwota: " << fixed << setprecision(2) << incomesVector[i].getAmount() << endl;
         }
     }
 }

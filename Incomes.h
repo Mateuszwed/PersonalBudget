@@ -7,7 +7,7 @@ using namespace std;
 
 class Incomes {
 
-int incomesId;
+int id;
 int userId;
 int date;
 string item;
@@ -16,13 +16,13 @@ float amount;
 
 public:
 
-    int getIncomesId();
+    int getId();
     int getUserId();
     int getDate();
     string getItem();
     float getAmount();
 
-    void setIncomesId(int newIncomesId);
+    void setId(int newId);
     void setUserId(int newUserId);
     void setDate(int newDate);
     void setItem(string newItem);

@@ -1,8 +1,8 @@
 #include "Incomes.h"
 
 
-int Incomes::getIncomesId() {
-    return incomesId;
+int Incomes::getId() {
+    return id;
 }
 int Incomes::getUserId() {
     return userId;
@@ -18,9 +18,9 @@ float Incomes::getAmount() {
 }
 
 
-void Incomes::setIncomesId(int newIncomesId) {
+void Incomes::setId(int newId) {
 
-    incomesId = newIncomesId;
+    id = newId;
 }
 
 void Incomes::setUserId(int newUserId) {

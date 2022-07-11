@@ -3,15 +3,17 @@
 
 int FileWithExpenses::getLastExpensesId() {
 
+    CMarkup xml;
+
     int lastId = 0;
 
     bool fileExists = xml.Load( FILE_NAME_WITH_EXPENSES );
     if(fileExists) {
         xml.FindElem("Expenses");
         xml.IntoElem();
-        while(xml.FindElem("expenses")) {
+        while(xml.FindElem("expense")) {
             xml.IntoElem();
-            xml.FindElem("expensesId");
+            xml.FindElem("id");
             lastId = AuxiliaryMethods::convertStringToInt(xml.GetData());
             xml.OutOfElem();
         }
@@ -24,6 +26,8 @@ int FileWithExpenses::getLastExpensesId() {
 
 void FileWithExpenses::addExpensesToFile(Expenses expenses) {
 
+    CMarkup xml;
+
     bool fileExists = xml.Load( FILE_NAME_WITH_EXPENSES );
 
     if(!fileExists) {
@@ -33,12 +37,12 @@ void FileWithExpenses::addExpensesToFile(Expenses expenses) {
     }
     xml.FindElem();
     xml.IntoElem();
-    xml.AddElem( "expenses" );
+    xml.AddElem( "expense" );
     xml.IntoElem();
-    xml.AddElem( "expensesId", expenses.getExpensesId() );
+    xml.AddElem( "id", expenses.getId() );
     xml.AddElem( "userId", expenses.getUserId() );
     xml.AddElem( "item", expenses.getItem() );
-    xml.AddElem( "date", AuxiliaryMethods::changeFormatDateToDateWithHyphens(expenses.getDate()) );
+    xml.AddElem( "date", BalanceManager::changeFormatDateToDateWithHyphens(expenses.getDate()) );
     xml.AddElem( "amount", AuxiliaryMethods::convertFloatToString(expenses.getAmount() ));
 
     xml.Save(FILE_NAME_WITH_EXPENSES);
@@ -49,29 +53,31 @@ void FileWithExpenses::addExpensesToFile(Expenses expenses) {
 
 vector <Expenses> FileWithExpenses::loadExpensesOfLoggedInUserFromFile(int loggedInUserId) {
 
+    CMarkup xml;
+
     vector <Expenses> expensesVector;
     Expenses expenses;
     int userId = 0;
-    int expensesId = 0;
+    int id = 0;
 
     bool fileExists = xml.Load( FILE_NAME_WITH_EXPENSES );
 
     if(fileExists) {
         xml.FindElem("Expenses");
         xml.IntoElem();
-        while(xml.FindElem("expenses")) {
+        while(xml.FindElem("expense")) {
             xml.IntoElem();
-            xml.FindElem("expensesId");
-            expensesId = AuxiliaryMethods::convertStringToInt(xml.GetData());
+            xml.FindElem("id");
+            id = AuxiliaryMethods::convertStringToInt(xml.GetData());
             xml.FindElem("userId");
             userId = AuxiliaryMethods::convertStringToInt(xml.GetData());
             if(userId == loggedInUserId) {
-                expenses.setExpensesId(expensesId);
+                expenses.setId(id);
                 expenses.setUserId(userId);
                 xml.FindElem("item");
                 expenses.setItem(xml.GetData());
                 xml.FindElem("date");
-                expenses.setDate(AuxiliaryMethods::changeFormatDateToInt(xml.GetData()));
+                expenses.setDate(BalanceManager::changeFormatDateToInt(xml.GetData()));
                 xml.FindElem("amount");
                 expenses.setAmount(AuxiliaryMethods::convertStringToFloat(xml.GetData()));
                 xml.OutOfElem();

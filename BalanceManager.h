@@ -19,6 +19,15 @@ bool checkCorrectEnterDate(string date);
 
 int getFirstDateFromUser();
 int getSecondDateFromUser();
+bool checkIsYearIsLeapYear(int year);
+bool checkFormatDate(string date);
+string replaceCommaToDot(string number);
+int getMonth(int date);
+int getDay(int date);
+int getYear(int date);
+int getCurrentDateInteger();
+static string changeFormatDateToDateWithHyphens(int date);
+static int changeFormatDateToInt(string dateStr);
 
 };
 

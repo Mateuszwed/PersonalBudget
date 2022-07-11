@@ -1,8 +1,8 @@
 #include "Expenses.h"
 
 
-int Expenses::getExpensesId() {
-    return expensesId;
+int Expenses::getId() {
+    return id;
 }
 int Expenses::getUserId() {
     return userId;
@@ -18,9 +18,9 @@ float Expenses::getAmount() {
 }
 
 
-void Expenses::setExpensesId(int newExpensesId) {
+void Expenses::setId(int newId) {
 
-    expensesId = newExpensesId;
+    id = newId;
 }
 
 void Expenses::setUserId(int newUserId) {

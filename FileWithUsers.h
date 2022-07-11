@@ -16,7 +16,6 @@ using namespace std;
 class FileWithUsers {
 
 const string FILE_NAME;
-CMarkup xml;
 
 
 public:

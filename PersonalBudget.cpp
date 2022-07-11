@@ -80,7 +80,7 @@ void PersonalBudget::displaySumBalance(float sumOfExpenses, float sumOfIncomes){
 
 float different = sumOfIncomes - sumOfExpenses;
 cout << endl << "-------------------------------------------------------------------------------------------------------------" << endl;
-cout << "Suma wydatkow: " << sumOfExpenses << "      Suma przychodow: " << sumOfIncomes << "     Roznica: " << different << endl << endl;
+cout << "Suma wydatkow: " << fixed << setprecision(2) << sumOfExpenses << "      Suma przychodow: " << fixed << setprecision(2) << sumOfIncomes << "     Roznica: " << fixed << setprecision(2) << different << endl << endl;
 
 }
 
@@ -102,16 +102,25 @@ system("pause");
 
 }
 
-void PersonalBudget::displayBalanceSheetForSelectedPeriod(){
+void PersonalBudget::displayBalanceSheetForSelectedPeriod() {
+    int firstDate = 0;
+    int secondDate = 0;
+    do {
 
-int firstDate = getFirstDateFromUserToBalanceBetweenDates();
-int secondDate = getSecondDateFromUserToBalanceBetweenDates();
-expensesManager->displayExpensesBalanceBetweenTwoDates(firstDate, secondDate);
-incomesManager->displayIncomesBalanceBetweenTwoDates(firstDate, secondDate);
-displaySumBalance(expensesManager->sumExpensesBalanceBetweenTwoDates(firstDate, secondDate) , incomesManager->sumIncomesBalanceBetweenTwoDates(firstDate, secondDate));
-system("pause");
+        firstDate = getFirstDateFromUserToBalanceBetweenDates();
+        secondDate = getSecondDateFromUserToBalanceBetweenDates();
+        if(firstDate > secondDate) {
+            cout << "Podales nieprawidlowy format dat" << endl;
+        }
+    } while(firstDate > secondDate);
+    cout << endl;
+    expensesManager->displayExpensesBalanceBetweenTwoDates(firstDate, secondDate);
+    incomesManager->displayIncomesBalanceBetweenTwoDates(firstDate, secondDate);
 
+    displaySumBalance(expensesManager->sumExpensesBalanceBetweenTwoDates(firstDate, secondDate), incomesManager->sumIncomesBalanceBetweenTwoDates(firstDate, secondDate));
+    system("pause");
 }
+
 
 
 char PersonalBudget::selectOptionFromMainMenu(){

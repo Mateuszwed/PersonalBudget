@@ -8,11 +8,12 @@
 #include "Markup.h"
 #include "Incomes.h"
 #include "AuxiliaryMethods.h"
+#include "BalanceManager.h"
+
 
 class FileWithIncomes {
 
 const string FILE_NAME_WITH_INCOMES;
-CMarkup xml;
 
 public:
 

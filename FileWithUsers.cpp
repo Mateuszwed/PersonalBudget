@@ -4,6 +4,7 @@
 
 void FileWithUsers::addUserToFile(User user) {
 
+    CMarkup xml;
 
     bool fileExists = xml.Load( FILE_NAME );
 
@@ -28,6 +29,8 @@ void FileWithUsers::addUserToFile(User user) {
 
 
 vector <User> FileWithUsers::loadUsersFromFile() {
+
+    CMarkup xml;
 
     User user;
     vector <User> users;
@@ -58,6 +61,8 @@ vector <User> FileWithUsers::loadUsersFromFile() {
 
 void FileWithUsers::changePassword(int loggedIdUser, string newPassword) {
 
+    CMarkup xml;
+
     string id;
 
     xml.Load(FILE_NAME);
@@ -69,8 +74,7 @@ void FileWithUsers::changePassword(int loggedIdUser, string newPassword) {
         id = xml.GetData();
         if(AuxiliaryMethods::convertStringToInt(id) == loggedIdUser) {
             xml.FindElem("password");
-            xml.RemoveElem();
-            xml.AddElem("password", newPassword);
+            xml.SetData(newPassword);
             break;
         }
         xml.OutOfElem();
