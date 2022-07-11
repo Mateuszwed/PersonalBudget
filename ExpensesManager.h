@@ -4,13 +4,14 @@
 #include <iostream>
 #include <vector>
 
+#include "BalanceManager.h"
 #include "Expenses.h"
 #include "FileWithExpenses.h"
 
 
 using namespace std;
 
-class ExpensesManager {
+class ExpensesManager : public BalanceManager{
 
     const int LOGGED_IN_USER_ID;
     vector <Expenses> expensesVector;
@@ -20,7 +21,7 @@ class ExpensesManager {
     float getAmountFromUser();
     string getItemFromUser();
     vector <Expenses> sortExpensesByDate();
-    bool checkDateIsNotHigherThanCurrentDate(int date);
+
 public:
 
     ExpensesManager(string fileNameWithExpenses, int loggedInUserId) : LOGGED_IN_USER_ID(loggedInUserId), fileWithExpenses(fileNameWithExpenses){
@@ -32,7 +33,6 @@ public:
     int addExpenses(int loggedInUserId, int lastIdExpenses);
     void showAllExpenses();
     int choiceDateToNewExpenses(char choice);
-    bool checkCorrectEnterDate(string date);
     int getDataFromUser();
     void displayExpensesBalanceCurrentMonth();
     float sumExpensesBalanceCurrentMonth();

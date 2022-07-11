@@ -5,7 +5,7 @@
 #include <vector>
 #include <iomanip>
 
-#include "BilansManager.h"
+#include "BalanceManager.h"
 #include "Incomes.h"
 #include "FileWithIncomes.h"
 
@@ -13,7 +13,7 @@
 
 using namespace std;
 
-class IncomesManager : public BilansManager{
+class IncomesManager : public BalanceManager{
 
     const int LOGGED_IN_USER_ID;
     vector <Incomes> incomesVector;
@@ -21,9 +21,6 @@ class IncomesManager : public BilansManager{
     Incomes getDataNewIncomes(int loggedInUserId, int lastIdIncomes);
     bool checkCorrectEnterAmount(string amount);
     float getAmountFromUser();
-    //bool compareTwoDates(int dateTab[], int currentDateTab[]);
-    //void convertDateToArray(int dateArray[], int date);
-    bool checkDateIsNotHigherThanCurrentDate(int date);
     vector <Incomes> sortIncomesByDate();
     string getItemFromUser();
 
@@ -36,9 +33,7 @@ public:
     };
     int getLastIdIncomes();
     int addIncomes(int loggedInUserId, int lastIdIncomes);
-    void showAllIncomes();
     int choiceDateToNewIncomes(char choice);
-    bool checkCorrectEnterDate(string date);
     int getDateFromUser();
     void displayIncomesBalanceCurrentMonth();
     float sumIncomesBalanceCurrentMonth();

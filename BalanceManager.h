@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class BilansManager {
+class BalanceManager {
 
 
 public:
@@ -17,7 +17,11 @@ public:
 bool checkDateIsNotHigherThanCurrentDate(int date);
 bool checkCorrectEnterDate(string date);
 
+int getFirstDateFromUser();
+int getSecondDateFromUser();
+
 };
+
 
 #endif
 

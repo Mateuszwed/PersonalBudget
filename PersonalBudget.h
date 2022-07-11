@@ -6,6 +6,7 @@
 #include "UserManager.h"
 #include "IncomesManager.h"
 #include "ExpensesManager.h"
+#include "BalanceManager.h"
 
 
 using namespace std;
@@ -17,6 +18,8 @@ class PersonalBudget {
 UserManager userManager;
 IncomesManager *incomesManager;
 ExpensesManager *expensesManager;
+BalanceManager *balanceManager;
+
 
 char choice;
 const string FILE_NAME_WITH_INCOMES;
@@ -41,12 +44,15 @@ float sumIncomesBalanceLastMonth();
 void displayBalanceSheetForSelectedPeriod();
 int getFirstDateFromUserToBalanceBetweenDates();
 int getSecondDateFromUserToBalanceBetweenDates();
+char selectOptionFromMainMenu();
+char selectOptionFromUserMenu();
+
 
 public:
 
     PersonalBudget(string fileNameWithUsers, string fileNameWithIncomes, string fileNameWithExpenses) : userManager(fileNameWithUsers),
     FILE_NAME_WITH_INCOMES(fileNameWithIncomes), FILE_NAME_WITH_EXPENSES(fileNameWithExpenses)  {
-
+        balanceManager = NULL;
         incomesManager = NULL;
         expensesManager = NULL;
     };
@@ -54,6 +60,8 @@ public:
     ~PersonalBudget(){
     delete incomesManager;
     delete expensesManager;
+    delete balanceManager;
+    balanceManager = NULL;
     expensesManager = NULL;
     incomesManager = NULL;
     };

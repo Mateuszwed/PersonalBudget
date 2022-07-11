@@ -1,7 +1,7 @@
-#include "BilansManager.h"
+#include "BalanceManager.h"
 
 
-bool BilansManager::checkDateIsNotHigherThanCurrentDate(int date) {
+bool BalanceManager::checkDateIsNotHigherThanCurrentDate(int date) {
 
     int dateYear = AuxiliaryMethods::getYear(date);
     int dateMonth = AuxiliaryMethods::getMonth(date);
@@ -22,7 +22,7 @@ bool BilansManager::checkDateIsNotHigherThanCurrentDate(int date) {
 }
 
 
-bool BilansManager::checkCorrectEnterDate(string date) {
+bool BalanceManager::checkCorrectEnterDate(string date) {
 
     if((date.length() < 10) || (date.length() > 10)) {
         return false;
@@ -66,3 +66,36 @@ bool BilansManager::checkCorrectEnterDate(string date) {
     return true;
 
 }
+
+
+int BalanceManager::getFirstDateFromUser() {
+    string date;
+    bool ifCorrect = true;
+    while(ifCorrect) {
+        cout << "Data od: ";
+        date = AuxiliaryMethods::loadLine();
+        if(checkCorrectEnterDate(date)) {
+            return AuxiliaryMethods::changeFormatDateToInt(date);
+        } else {
+            cout << "Podales zly format daty." << endl;
+            ifCorrect = true;
+        }
+    }
+}
+
+
+int BalanceManager::getSecondDateFromUser() {
+    string date = "";
+    bool ifCorrect = true;
+    while(ifCorrect) {
+        cout << "Data do: ";
+        date = AuxiliaryMethods::loadLine();
+        if(checkCorrectEnterDate(date)) {
+            return AuxiliaryMethods::changeFormatDateToInt(date);
+        } else {
+            cout << "Podales zly format daty." << endl;
+            ifCorrect = true;
+        }
+    }
+}
+

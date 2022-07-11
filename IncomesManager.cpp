@@ -27,7 +27,7 @@ Incomes IncomesManager::getDataNewIncomes(int loggedInUserId, int lastIdIncomes)
 }
 
 
-
+/*
 bool IncomesManager::checkDateIsNotHigherThanCurrentDate(int date) {
 
     int dateYear = AuxiliaryMethods::getYear(date);
@@ -93,7 +93,7 @@ bool IncomesManager::checkCorrectEnterDate(string date) {
     return true;
 
 }
-
+*/
 
 bool IncomesManager::checkCorrectEnterAmount(string amount) {
     for(int i = 0; i < amount.length(); i++) {
@@ -161,39 +161,6 @@ int IncomesManager::getDateFromUser() {
         }
     }
 }
-
-
-int IncomesManager::getFirstDateFromUser() {
-    string date;
-    bool ifCorrect = true;
-    while(ifCorrect) {
-        cout << "Data od: ";
-        date = AuxiliaryMethods::loadLine();
-        if(checkCorrectEnterDate(date)) {
-            return AuxiliaryMethods::changeFormatDateToInt(date);
-        } else {
-            cout << "Podales zly format daty." << endl;
-            ifCorrect = true;
-        }
-    }
-}
-
-
-int IncomesManager::getSecondDateFromUser() {
-    string date = "";
-    bool ifCorrect = true;
-    while(ifCorrect) {
-        cout << "Data do: ";
-        date = AuxiliaryMethods::loadLine();
-        if(checkCorrectEnterDate(date)) {
-            return AuxiliaryMethods::changeFormatDateToInt(date);
-        } else {
-            cout << "Podales zly format daty." << endl;
-            ifCorrect = true;
-        }
-    }
-}
-
 
 
 int IncomesManager::getLastIdIncomes() {
@@ -350,21 +317,4 @@ void IncomesManager::displayIncomesBalanceBetweenTwoDates(int firstDate, int sec
                  setw(30) << "Kwota: " << incomesVector[i].getAmount() << endl;
         }
     }
-}
-
-
-void IncomesManager::showAllIncomes() {
-
-    incomesVector = sortIncomesByDate();
-
-    for(int i = 0; i < incomesVector.size(); i++) {
-
-        cout << "User id: " << incomesVector[i].getUserId() <<
-             " Incomes id: " << incomesVector[i].getIncomesId() <<
-             " Item: " << incomesVector[i].getItem() <<
-             " Date: " << AuxiliaryMethods::changeFormatDateToDateWithHyphens(incomesVector[i].getDate()) <<
-             " Amount: " << incomesVector[i].getAmount() << endl;
-
-    }
-    system("pause");
 }

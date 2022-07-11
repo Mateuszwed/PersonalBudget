@@ -66,13 +66,13 @@ return incomesManager->sumIncomesBalanceLastMonth();
 
 int PersonalBudget::getFirstDateFromUserToBalanceBetweenDates(){
 
-return incomesManager->getFirstDateFromUser();
+return balanceManager->getFirstDateFromUser();
 
 }
 
 int PersonalBudget::getSecondDateFromUserToBalanceBetweenDates(){
 
-return incomesManager->getSecondDateFromUser();
+return balanceManager->getSecondDateFromUser();
 
 }
 
@@ -113,17 +113,31 @@ system("pause");
 
 }
 
+
+char PersonalBudget::selectOptionFromMainMenu(){
+
+return userManager.selectOptionFromMainMenu();
+}
+
+
+char PersonalBudget::selectOptionFromUserMenu(){
+
+return userManager.selectOptionFromUserMenu();
+}
+
+
+
 void PersonalBudget::mainMenu() {
 
     while (true) {
         if (!userManager.isUserLoggedIn()) {
-            choice = userManager.selectOptionFromMainMenu();
+            choice = selectOptionFromMainMenu();
 
             menuLoggedOutUser();
 
         } else {
 
-            choice = userManager.selectOptionFromUserMenu();
+            choice = selectOptionFromUserMenu();
             menuLoggedInUser();
 
         }
