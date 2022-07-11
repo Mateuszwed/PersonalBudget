@@ -36,13 +36,13 @@ string AuxiliaryMethods::loadLine() {
 }
 
 
-string AuxiliaryMethods::changeFirstLetterForUpperCaseAndOthersForLowerCase(string tekst) {
+string AuxiliaryMethods::changeFirstLetterForUpperCaseAndOthersForLowerCase(string text) {
 
-    if (!tekst.empty()) {
-        transform(tekst.begin(), tekst.end(), tekst.begin(), ::tolower);
-        tekst[0] = toupper(tekst[0]);
+    if (!text.empty()) {
+        transform(text.begin(), text.end(), text.begin(), ::tolower);
+        text[0] = toupper(text[0]);
     }
-    return tekst;
+    return text;
 }
 
 

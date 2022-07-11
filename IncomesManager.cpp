@@ -1,6 +1,7 @@
 #include "IncomesManager.h"
 
 
+
 Incomes IncomesManager::getDataNewIncomes(int loggedInUserId, int lastIdIncomes) {
 
     Incomes incomes;

@@ -17,7 +17,7 @@ public:
     static string convertIntToString(int number);
     static char loadChar();
     static string loadLine();
-    static string changeFirstLetterForUpperCaseAndOthersForLowerCase(string tekst);
+    static string changeFirstLetterForUpperCaseAndOthersForLowerCase(string text);
     static int convertStringToInt(string number);
     static string getCurrentDate();
     static int getCurrentDateInteger();
