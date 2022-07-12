@@ -26,6 +26,7 @@ int getMonth(int date);
 int getDay(int date);
 int getYear(int date);
 int getCurrentDateInteger();
+string getCurrentDate();
 static string changeFormatDateToDateWithHyphens(int date);
 static int changeFormatDateToInt(string dateStr);
 

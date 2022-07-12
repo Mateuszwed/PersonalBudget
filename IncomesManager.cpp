@@ -11,7 +11,7 @@ Incomes IncomesManager::getDataNewIncomes(int loggedInUserId, int lastIdIncomes)
     incomes.setId(++lastIdIncomes);
     incomes.setUserId(loggedInUserId);
 
-    cout << "Czy chcesz dodac przychod z dzisiejsza data <t/n>?:  " << AuxiliaryMethods::getCurrentDate() << endl;
+    cout << "Czy chcesz dodac przychod z dzisiejsza data <t/n>?:  " << getCurrentDate() << endl;
     date = choiceDateToNewIncomes(AuxiliaryMethods::loadChar());
     incomes.setDate(date);
 

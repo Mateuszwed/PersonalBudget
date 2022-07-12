@@ -110,7 +110,7 @@ void PersonalBudget::displayBalanceSheetForSelectedPeriod() {
         firstDate = getFirstDateFromUserToBalanceBetweenDates();
         secondDate = getSecondDateFromUserToBalanceBetweenDates();
         if(firstDate > secondDate) {
-            cout << "Podales nieprawidlowy format dat" << endl;
+            cout << "Wpisany zakres dat jest nieprawidlowy." << endl;
         }
     } while(firstDate > secondDate);
     cout << endl;

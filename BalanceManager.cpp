@@ -40,7 +40,7 @@ bool BalanceManager::checkCorrectEnterDate(string date) {
     case 8:
     case 10:
     case 12:
-        if((dateMonth < 1) || (dateMonth > 31)) {
+        if((dateDay < 1) || (dateDay > 31)) {
             return false;
         }
         break;
@@ -48,7 +48,7 @@ bool BalanceManager::checkCorrectEnterDate(string date) {
     case 6:
     case 9:
     case 11:
-        if((dateMonth < 1) || (dateMonth > 30)) {
+        if((dateDay < 1) || (dateDay > 30)) {
             return false;
         }
         break;
@@ -203,4 +203,24 @@ int BalanceManager::getCurrentDateInteger() {
     date = AuxiliaryMethods::convertStringToInt(currentDate);
 
     return date;
+}
+
+string BalanceManager::getCurrentDate() {
+
+    string currentDate;
+    SYSTEMTIME SystemTime;
+
+    GetSystemTime( & SystemTime );
+    currentDate = AuxiliaryMethods::convertIntToString(SystemTime.wYear);
+    if(SystemTime.wMonth < 10) {
+        currentDate += "-0" + AuxiliaryMethods::convertIntToString(SystemTime.wMonth);
+    } else {
+        currentDate += '-' + AuxiliaryMethods::convertIntToString(SystemTime.wMonth);
+    }
+    if(SystemTime.wDay < 10) {
+        currentDate += "-0" + AuxiliaryMethods::convertIntToString(SystemTime.wDay);
+    } else {
+        currentDate += '-' + AuxiliaryMethods::convertIntToString(SystemTime.wDay);
+    }
+    return currentDate;
 }

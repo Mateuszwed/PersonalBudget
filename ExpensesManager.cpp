@@ -10,7 +10,7 @@ Expenses ExpensesManager::getDataNewExpenses(int loggedInUserId, int lastIdExpen
     expenses.setId(++lastIdExpenses);
     expenses.setUserId(loggedInUserId);
 
-    cout << "Czy chcesz dodac wydatek z dzisiejsza data <t/n>?:  " << AuxiliaryMethods::getCurrentDate() << endl;
+    cout << "Czy chcesz dodac wydatek z dzisiejsza data <t/n>?:  " << getCurrentDate() << endl;
     date = choiceDateToNewExpenses(AuxiliaryMethods::loadChar());
     expenses.setDate(date);
 
@@ -108,7 +108,7 @@ int ExpensesManager::choiceDateToNewExpenses(char choice) {
     switch(choice) {
     case 't':
     case 'T':
-        return changeFormatDateToInt(AuxiliaryMethods::getCurrentDate());
+        return getCurrentDateInteger();
         break;
     case 'n':
     case 'N':

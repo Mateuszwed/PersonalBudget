@@ -56,26 +56,6 @@ int AuxiliaryMethods::convertStringToInt(string number) {
 }
 
 
-string AuxiliaryMethods::getCurrentDate() {
-
-    string currentDate;
-    SYSTEMTIME SystemTime;
-
-    GetSystemTime( & SystemTime );
-    currentDate = convertIntToString(SystemTime.wYear);
-    if(SystemTime.wMonth < 10) {
-        currentDate += "-0" + convertIntToString(SystemTime.wMonth);
-    } else {
-        currentDate += '-' + convertIntToString(SystemTime.wMonth);
-    }
-    if(SystemTime.wDay < 10) {
-        currentDate += "-0" + convertIntToString(SystemTime.wDay);
-    } else {
-        currentDate += '-' + convertIntToString(SystemTime.wDay);
-    }
-    return currentDate;
-}
-
 
 float AuxiliaryMethods::convertStringToFloat(string number) {
     float numberFloat;
